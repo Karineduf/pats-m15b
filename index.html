@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tirage moitié-moitié PATS M15B</title>
+
+<style>
+
+:root{
+    --bleu:#041850;
+    --rouge:#d9193f;
+    --vert:#28a745;
+    --jaune:#ffc107;
+    --bleuSelection:#0d6efd;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:var(--bleu);
+    font-family:Arial,Helvetica,sans-serif;
+    padding:15px;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:15px;
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+
+.banner img{
+    width:100%;
+    display:block;
+    border-radius:10px;
+}
+
+h1,h2,h3{
+    color:#0c1b66;
+}
+
+.center{
+    text-align:center;
+}
+
+.prize{
+    background:var(--rouge);
+    color:white;
+    text-align:center;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+.prize h2{
+    color:white;
+    font-size:60px;
+}
+
+.price{
+    text-align:center;
+    font-size:40px;
+    color:var(--rouge);
+    font-weight:bold;
+    margin-top:20px;
+}
+
+.stats{
+    display:flex;
+    justify-content:space-around;
+    text-align:center;
+    flex-wrap:wrap;
+}
+
+.stats div{
+    padding:10px;
+}
+
+.stats h2{
+    color:var(--rouge);
+}
+
+.legend{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+}
+
+.legend-item{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:bold;
+}
+
+.color{
+    width:16px;
+    height:16px;
+    border-radius:3px;
+}
+
+.green{background:var(--vert);}
+.blue{background:var(--bleuSelection);}
+.yellow{background:var(--jaune);}
+.red{background:var(--rouge);}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(10,1fr);
+    gap:6px;
+}
+
+.number{
+    text-align:center;
+    padding:10px;
+    border-radius:4px;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.number:hover{
+    transform:scale(1.05);
+}
+
+.disponible{
+    background:var(--vert);
+}
+
+.selected{
+    background:var(--bleuSelection);
+}
+
+.reserve{
+    background:var(--jaune);
+    color:black;
+    cursor:not-allowed;
+}
+
+.vendu{
+    background:var(--rouge);
+    cursor:not-allowed;
+}
+
+.selection{
+    margin-top:15px;
+    background:#eef3ff;
+    padding:12px;
+    border-radius:6px;
+    border:1px solid #d0dcff;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin-bottom:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+button{
+    background:var(--rouge);
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:5px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+button:hover{
+    opacity:.9;
+}
+
+.email{
+    color:#001e7d;
+    font-size:22px;
+    font-weight:bold;
+}
+
+@media(max-width:700px){
+
+.grid{
+    grid-template-columns:repeat(5,1fr);
+}
+
+.stats{
+    flex-direction:column;
+}
+
+.prize h2{
+    font-size:40px;
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="card banner">
+<img src="images/banniere-pats-m15b.png"
+     alt="PATS M15B">
+</div>
+
+<div class="card center">
+
+<h1>🎟 GRAND TIRAGE MOITIÉ-MOITIÉ PATS M15B</h1>
+
+<div class="prize">
+<div>🏆 COUREZ LA CHANCE DE GAGNER</div>
+<h2>1 000 $</h2>
+<div>EN ARGENT</div>
+</div>
+
+<div class="price">
+20 $ / numéro
+</div>
+
+<p style="margin-top:10px;">
+100 numéros disponibles
+</p>
+
+</div>
+
+<div class="card">
+
+<h2 class="center">📊 Progression des ventes</h2>
+
+<div class="stats">
+
+<div>
+<h2>100</h2>
+<p>Disponibles</p>
+</div>
+
+<div>
+<h2>0</h2>
+<p>Réservés</p>
+</div>
+
+<div>
+<h2>0 $</h2>
+<p>Montant récolté</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>🎟 Choisissez votre numéro</h2>
+
+<br>
+
+<div class="legend">
+
+<div class="legend-item">
+<div class="color green"></div>
+Vert : disponible
+</div>
+
+<div class="legend-item">
+<div class="color blue"></div>
+Bleu : sélectionné
+</div>
+
+<div class="legend-item">
+<div class="color yellow"></div>
+Jaune : réservé
+</div>
+
+<div class="legend-item">
+<div class="color red"></div>
+Rouge : vendu
+</div>
+
+</div>
+
+<div class="grid" id="grid"></div>
+
+<div class="selection" id="selectionInfo">
+Aucun numéro sélectionné.
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>📝 Vos coordonnées</h2>
+
+<br>
+
+<form id="reservationForm">
+
+<input type="text"
+placeholder="Nom complet"
+required>
+
+<input type="text"
+placeholder="Nom du joueur encouragé"
+required>
+
+<input type="email"
+placeholder="Adresse courriel"
+required>
+
+<input type="tel"
+placeholder="Téléphone">
+
+<input type="hidden"
+id="selectedNumbers">
+
+<button type="submit">
+Réserver mon numéro
+</button>
+
+</form>
+
+</div>
+
+<div class="card">
+
+<h2>💳 Paiement</h2>
+<br>
+
+<p>Envoyer le virement Interac à :</p>
+
+<br>
+
+<div class="email">
+karineduf@hotmail.com
+</div>
+
+<br>
+
+<p>
+20 $ par numéro.
+</p>
+
+</div>
+
+<div class="card center">
+
+<h2>❤️ MERCI DE SOUTENIR LES PATS M15B</h2>
+
+<p style="margin-top:10px;">
+Bonne chance à tous les participants !
+</p>
+
+</div>
+
+</div>
+
+<script>
+
+const selection = [];
+
+const numerosReserves = [
+"015",
+"027"
+];
+
+const numerosVendus = [
+"003",
+"012",
+"050"
+];
+
+const grille = document.getElementById("grid");
+
+for(let i=1;i<=100;i++){
+
+    let numero = String(i).padStart(3,'0');
+
+    let statut = "disponible";
+
+    if(numerosReserves.includes(numero))
+        statut = "reserve";
+
+    if(numerosVendus.includes(numero))
+        statut = "vendu";
+
+    let div = document.createElement("div");
+
+    div.className = "number " + statut;
+
+    div.innerHTML = numero;
+
+    grille.appendChild(div);
+
+}
+
+document.querySelectorAll(".number.disponible")
+.forEach(numero=>{
+
+    numero.addEventListener("click",function(){
+
+        const valeur = this.innerHTML;
+
+        if(this.classList.contains("selected")){
+
+            this.classList.remove("selected");
+            this.classList.add("disponible");
+
+            const index = selection.indexOf(valeur);
+
+            if(index>-1){
+                selection.splice(index,1);
+            }
+
+        }else{
+
+            this.classList.remove("disponible");
+            this.classList.add("selected");
+
+            selection.push(valeur);
+
+        }
+
+        updateSelection();
+
+    });
+
+});
+
+function updateSelection(){
+
+    const info =
+    document.getElementById("selectionInfo");
+
+    if(selection.length===0){
+
+        info.innerHTML =
+        "Aucun numéro sélectionné.";
+
+    }else{
+
+        info.innerHTML =
+        "<strong>Numéros sélectionnés :</strong> " +
+        selection.join(", ");
+
+    }
+
+    document.getElementById("selectedNumbers").value =
+    selection.join(",");
+
+}
+
+document.getElementById("reservationForm")
+.addEventListener("submit",function(e){
+
+    e.preventDefault();
+
+    if(selection.length===0){
+
+        alert(
+        "Veuillez sélectionner au moins un numéro."
+        );
+
+        return;
+
+    }
+
+    alert(
+    "Réservation enregistrée pour les numéros : "
+    + selection.join(", ")
+    );
+
+});
+
+</script>
+
+</body>
+</html>
